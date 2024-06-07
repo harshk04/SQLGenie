@@ -1,0 +1,30 @@
+import pandas as pd
+import psycopg2
+
+# Define the connection details
+host = 'localhost'
+dbname = 'vectordb'
+user = 'postgres'
+password = 'Harsh@2004'
+port = '5432'
+
+# Create a connection to the PostgreSQL database
+conn = psycopg2.connect(
+    host=host,
+    dbname=dbname,
+    user=user,
+    password=password,
+    port=port
+)
+
+# Define the query to read the table
+query = "SELECT * FROM applicants;"
+
+# Use pandas to read the SQL query into a DataFrame
+df_applicants = pd.read_sql_query(query, conn)
+
+# Close the database connection
+conn.close()
+
+# Display the DataFrame
+print(df_applicants)
