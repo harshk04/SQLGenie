@@ -1,3 +1,5 @@
+##ADD DATA ON QDRANT
+
 from langchain.vectorstores import Qdrant
 from langchain.embeddings import HuggingFaceBgeEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
