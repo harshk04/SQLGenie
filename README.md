@@ -43,7 +43,7 @@ Welcome to **SQLGenie**, your friendly SQL chatbot designed to assist with datab
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/sqlgenie.git
+    git clone https://github.com/harshk04/sqlgenie.git
     cd sqlgenie
     ```
 
