@@ -1,18 +1,10 @@
 # SQLGenie
 
-<img width="800" alt="Screenshot 2024-06-12 at 4 19 00 PM" src="https://github.com/harshk04/QDRANT-LLM/assets/115946158/62c8280b-7974-4589-ac3e-14341b89cb85">
-
-<img width="800" alt="Screenshot 2024-06-09 at 10 12 20 PM" src="https://github.com/harshk04/QDRANT-LLM/assets/115946158/092bc2a9-794c-4ca8-9ccb-d4d9d800e526">
-
-<img width="800" alt="Screenshot 2024-06-08 at 1 00 57 PM" src="https://github.com/harshk04/QDRANT-LLM/assets/115946158/3501e505-261f-4c36-a8e6-d6b9d77d5f95">
-
-
-• Developed a Text-to-SQL conversion tool leveraging LLAMA3 (LLM) and Qdrant Vector Database, reducing
-query generation time by 30%.
-
-• Implemented five distinct architectural patterns for Text-to-SQL conversion, achieving over 90% accuracy
-across various use cases.
-
-• Demonstrated practical applications in the industry, improving data acquisition processes and SQL query
-generation efficiency by 50%.
+A Text to SQL Conversion tool
+<img width="900" alt="Screenshot 2024-06-17 at 11 41 58 AM" src="https://github.com/harshk04/SQLGenie-Final-App/assets/115946158/45c98eb7-d019-430b-a850-2a1743236402">
+<img width="900" alt="Screenshot 2024-06-17 at 11 42 03 AM" src="https://github.com/harshk04/SQLGenie-Final-App/assets/115946158/3ed4ca3a-484a-445d-9f40-6284c4664901">
+<img width="900" alt="Screenshot 2024-06-17 at 11 42 11 AM" src="https://github.com/harshk04/SQLGenie-Final-App/assets/115946158/eb63eb21-0610-45c8-9d72-0155bb5a37a8">
+<img width="900" alt="Screenshot 2024-06-17 at 11 42 22 AM" src="https://github.com/harshk04/SQLGenie-Final-App/assets/115946158/433beec0-6073-4af0-97a0-8015716e9732">
+<img width="900" alt="Screenshot 2024-06-17 at 11 45 09 AM" src="https://github.com/harshk04/SQLGenie-Final-App/assets/115946158/7b7afdd5-e0c1-4b4b-8a8c-74ae26be3e2b">
+<img width="900" alt="Screenshot 2024-06-17 at 11 45 28 AM" src="https://github.com/harshk04/SQLGenie-Final-App/assets/115946158/f56e0b4f-b25b-41e5-adf2-6ae8d6ee4224">
 
