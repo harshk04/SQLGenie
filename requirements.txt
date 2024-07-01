@@ -1,0 +1,8 @@
+ollama
+streamlit
+vanna
+qdrant_client
+vanna[qdrant,ollama,postgres]
+vanna[qdrant,openai,postgres]
+plotly
+pandas
