@@ -1,152 +1,173 @@
+# # training_data.py
+
 # training_data.py
 
-ddl_applicants = """
-CREATE TABLE applicants (
-    applicantid INT,
-    position INT,
-    application_date DATE,
-    stage VARCHAR(50),
-    status VARCHAR(50),
-    recruiter VARCHAR(50),
-    country VARCHAR(50),
-    applicant_name VARCHAR(100),
-    salary INT
+ddl_departments= """
+CREATE TABLE departments (
+    department_id SERIAL PRIMARY KEY,
+    department_name VARCHAR(255) NOT NULL
 );
 """
 
-ddl_ipl = """
-CREATE TABLE ipl (
-    "ID" serial PRIMARY KEY,
-    "Wk" integer NOT NULL,
-    "Date" date NOT NULL,
-    "Home" varchar(50) NOT NULL,
-    "HomeGoals" integer NOT NULL,
-    "AwayGoals" integer NOT NULL,
-    "Away" varchar(50) NOT NULL,
-    "FTR" varchar(1) NOT NULL
+ddl_students = """
+CREATE TABLE students (
+    student_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    department_id INT REFERENCES departments(department_id)
 );
 """
+
+ddl_professors="""
+CREATE TABLE professors (
+    professor_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    department_id INT REFERENCES departments(department_id)
+);
+"""
+ddl_courses="""
+CREATE TABLE courses (
+    course_id SERIAL PRIMARY KEY,
+    course_name VARCHAR(255) NOT NULL,
+    department_id INT REFERENCES departments(department_id),
+    professor_id INT REFERENCES professors(professor_id)
+);"""
+
+ddl_enrollments="""
+CREATE TABLE enrollments (
+    enrollment_id SERIAL PRIMARY KEY,
+    student_id INT REFERENCES students(student_id),
+    course_id INT REFERENCES courses(course_id),
+    enrollment_date DATE NOT NULL
+);
+"""
+
+# documentation = [("""
+# The applicants table stores information about job applicants including details about the position applied for, application date, current stage of the application process, status, recruiter, country, applicant name, and salary expectation. Below is the detailed documentation for each column in the table.
+# """)
+# ]
 
 queries = [
-    ("Select teams which have AwayGoals as 1", """
-    SELECT "Home", "Away", "AwayGoals"
-    FROM ipl
-    WHERE "AwayGoals" = 1;
+    ("Find all courses a student is enrolled in", """
+    SELECT s.first_name, s.last_name, c.course_name
+    FROM students s
+    JOIN enrollments e ON s.student_id = e.student_id
+    JOIN courses c ON e.course_id = c.course_id
+    WHERE s.student_id = 1;
+
     """),
-    ("Count the number of matches where FTR (Full Time Result) is 'H' (Home win)", """
-    SELECT COUNT(*)
-    FROM ipl
-    WHERE "FTR" = 'H';
+    ("List all students in a particular course", """
+    SELECT c.course_name, s.first_name, s.last_name
+    FROM courses c
+    JOIN enrollments e ON c.course_id = e.course_id
+    JOIN students s ON e.student_id = s.student_id
+    WHERE c.course_id = 1;
+
     """),
-    ("Find the match with the highest number of total goals", """
-    SELECT "Home", "Away", "HomeGoals", "AwayGoals"
-    FROM ipl
-    ORDER BY ("HomeGoals" + "AwayGoals") DESC
-    LIMIT 1;
+    ("Get the department and professor for a specific course:", """
+    SELECT c.course_name, d.department_name, p.first_name, p.last_name
+    FROM courses c
+    JOIN departments d ON c.department_id = d.department_id
+    JOIN professors p ON c.professor_id = p.professor_id
+    WHERE c.course_id = 1;
+
     """),
     
-    ("List matches where both teams scored at least 2 goals ", """
-    SELECT "Home", "Away", "HomeGoals", "AwayGoals"
-            FROM ipl
-            WHERE "HomeGoals" >= 2 AND "AwayGoals" >= 2;
+    ("List all courses offered by a specific department: ", """
+   SELECT d.department_name, c.course_name
+    FROM departments d
+    JOIN courses c ON d.department_id = c.department_id
+    WHERE d.department_id = 1;
+
     """),
 
-    ("Calculate the average number of goals scored per match", """
-     SELECT AVG("HomeGoals" + "AwayGoals") AS avg_goals_per_match
-        FROM ipl;
+    ("Find all professors in a specific department:", """
+    SELECT d.department_name, p.first_name, p.last_name
+    FROM departments d
+    JOIN professors p ON d.department_id = p.department_id
+    WHERE d.department_id = 1;
+
      """),
 
-    ("Find matches where the result was a draw (FTR is 'D') ", """
-     SELECT "Home", "Away", "HomeGoals", "AwayGoals"
-        FROM ipl
-        WHERE "FTR" = 'D';
+    ("Find the email addresses of all students enrolled in a particular course:", """
+     SELECT s.email
+    FROM students s
+    JOIN enrollments e ON s.student_id = e.student_id
+    JOIN courses c ON e.course_id = c.course_id
+    WHERE c.course_name = 'Algorithms';
+
         """),
-    (" List matches where the home team won by at least 2 goals", """
-     SELECT "Home", "Away", "HomeGoals", "AwayGoals"
-        FROM ipl
-        WHERE "FTR" = 'H' AND ("HomeGoals" - "AwayGoals") >= 2;
+    ("List all courses taught by a particular professor:", """
+     SELECT p.first_name, p.last_name, c.course_name
+    FROM professors p
+    JOIN courses c ON p.professor_id = c.professor_id
+    WHERE p.first_name = 'Alan' AND p.last_name = 'Turing';
+
         """),
-    ("Identify matches where both teams had the same number of goals ", """
-     SELECT "Home", "Away", "HomeGoals", "AwayGoals"
-        FROM ipl
-        WHERE "HomeGoals" = "AwayGoals";
+    ("Find all students and their respective departments:", """
+     SELECT s.first_name, s.last_name, d.department_name
+    FROM students s
+    JOIN departments d ON s.department_id = d.department_id;
+
         """),
-    ("Retrieve the most recent matches played", """
-     SELECT "Home", "Away", "Date"
-        FROM ipl
-        ORDER BY "Date" DESC
-        LIMIT 10;
+    ("List all students along with the courses they are enrolled in and the professors teaching those courses:", """
+     SELECT s.first_name AS student_first_name, s.last_name AS student_last_name, 
+       c.course_name, p.first_name AS professor_first_name, p.last_name AS professor_last_name
+    FROM students s
+    JOIN enrollments e ON s.student_id = e.student_id
+    JOIN courses c ON e.course_id = c.course_id
+    JOIN professors p ON c.professor_id = p.professor_id;
+
         """),
-    ("Calculate the total number of matches played", """
-     SELECT COUNT(*)
-        FROM ipl;
+    ("Get the number of students enrolled in each course:", """
+    SELECT c.course_name, COUNT(e.student_id) AS number_of_students
+    FROM courses c
+    JOIN enrollments e ON c.course_id = e.course_id
+    GROUP BY c.course_name;
+
      """),
 
+        ("Find courses that are offered by a specific department and taught by a specific professor", """
+    SELECT c.course_name
+FROM courses c
+JOIN departments d ON c.department_id = d.department_id
+JOIN professors p ON c.professor_id = p.professor_id
+WHERE d.department_name = 'Computer Science' AND p.first_name = 'Alan' AND p.last_name = 'Turing';
+
+
+     """),
+         ("List all departments and the number of professors in each:", """
+    SELECT d.department_name, COUNT(p.professor_id) AS number_of_professors
+FROM departments d
+JOIN professors p ON d.department_id = p.department_id
+GROUP BY d.department_name;
+
+
+     """),
+         ("Get the number of students enrolled in each course:", """
+    SELECT c.course_name, COUNT(e.student_id) AS number_of_students
+    FROM courses c
+    JOIN enrollments e ON c.course_id = e.course_id
+    GROUP BY c.course_name;
+
+     """),
+         ("Get the number of students enrolled in each course:", """
+    SELECT c.course_name, COUNT(e.student_id) AS number_of_students
+    FROM courses c
+    JOIN enrollments e ON c.course_id = e.course_id
+    GROUP BY c.course_name;
+
+     """),
+         ("Get the number of students enrolled in each course:", """
+    SELECT c.course_name, COUNT(e.student_id) AS number_of_students
+    FROM courses c
+    JOIN enrollments e ON c.course_id = e.course_id
+    GROUP BY c.course_name;
+
+     """),
 
     
 ]
-
-documentation1 = """
-The ipl table stores information about football matches including details about the date, teams involved, goals scored, and the result of the match. Below is the detailed documentation for each column in the table.
-"""
-
-queries_applicants = [
-    ("Select applicants from a specific country (e.g., USA)", """
-    SELECT "applicantid", "applicant_name", "position", "country"
-    FROM applicants
-    WHERE "country" = 'USA';
-    """),
-    ("Count the number of applicants with a status of 'pending'", """
-    SELECT COUNT(*)
-    FROM applicants
-    WHERE "status" = 'pending';
-    """),
-    ("Find the applicant with the highest salary expectation", """
-    SELECT "applicantid", "applicant_name", "salary"
-    FROM applicants
-    ORDER BY "salary" DESC
-    LIMIT 1;
-    """),
-
-    ("List all applicants who applied in October 2018 ","""
-     SELECT "applicantid", "applicant_name", "application_date"
-FROM applicants
-WHERE "application_date" BETWEEN '2018-10-01' AND '2018-10-31';
-     """),
-
-    (" Calculate the average expected salary of applicants","""
-     SELECT AVG("salary") AS avg_salary
-FROM applicants;"""),
-
-    ("Find all applicants recruited by a specific recruiter (e.g., Sheldon Cooper)","""
-     SELECT "applicantid", "applicant_name", "recruiter"
-FROM applicants
-WHERE "recruiter" = 'Sheldon Cooper';"""),
-
-    ("List applicants currently in the 'interview' stage ","""
-     SELECT "applicantid", "applicant_name", "stage"
-FROM applicants
-WHERE "stage" = 'interview';"""),
-
-    (" Identify applicants who applied for a specific position (e.g., 1001)","""
-     SELECT "applicantid", "applicant_name", "position"
-FROM applicants
-WHERE "position" = '1001';"""),
-
-    (" Retrieve the most recent applications","""
-     SELECT "applicantid", "applicant_name", "application_date"
-FROM applicants
-ORDER BY "application_date" DESC
-LIMIT 10;"""),
-
-    (" Calculate the total number of applicants","""
-     SELECT COUNT(*)
-FROM applicants;"""),
-
-   
-    # Add other queries here...
-]
-
-documentation2 = """
-The applicants table stores information about job applicants including details about the position applied for, application date, current stage of the application process, status, recruiter, country, applicant name, and salary expectation. Below is the detailed documentation for each column in the table.
-"""
