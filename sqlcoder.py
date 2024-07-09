@@ -11,7 +11,7 @@ class SQLCoder(Qdrant_VectorStore, Ollama):
         Ollama.__init__(self, config=config)
 
     def connect_and_setup(self):
-        self.connect_to_postgres(host='localhost', dbname='vectordb', user='postgres', password='Harsh@2004', port='5432')
+        self.connect_to_postgres(host='localhost', dbname='university', user='postgres', password='Harsh@2004', port='5432')
 
         df_information_schema = self.run_sql("""
             SELECT *
@@ -26,18 +26,21 @@ class SQLCoder(Qdrant_VectorStore, Ollama):
         return plan
 
     def create_table(self):
-        self.train(ddl=training_data.ddl_applicants)
-        self.train(ddl=training_data.ddl_ipl)
+        self.train(ddl=training_data.ddl_departments)
+        self.train(ddl=training_data.ddl_students)
+        self.train(ddl=training_data.ddl_courses)
+        self.train(ddl=training_data.ddl_enrollments)
+        self.train(ddl=training_data.ddl_professors)
 
         for question, sql in training_data.queries:
             self.train(question=question, sql=sql)
 
-        self.train(documentation=training_data.documentation1)
+        # self.train(documentation=training_data.documentation1)
 
-        for question, sql in training_data.queries_applicants:
-            self.train(question=question, sql=sql)
+        # for question, sql in training_data.queries_applicants:
+        #     self.train(question=question, sql=sql)
 
-        self.train(documentation=training_data.documentation2)
+        # self.train(documentation=training_data.documentation2)
 
     def get_training_data_info(self):
         return self.get_training_data()
@@ -47,7 +50,7 @@ class SQLCoder(Qdrant_VectorStore, Ollama):
         if isinstance(result, tuple) and len(result) == 3:
             query, dataframe, figure = result
             if isinstance(dataframe, pd.DataFrame) and isinstance(figure, dict):
-                fig = px.bar(dataframe, x='applicant_name', y='salary', title='Top 5 Applicants by Salary')
+                fig = px.bar(dataframe, x='applicant_name', y='salary', title='-')
                 return query, dataframe, fig
         return result
 
