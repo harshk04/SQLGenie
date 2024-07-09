@@ -4,7 +4,7 @@ import pandas as pd
 import plotly.express as px
 import time
 
-# Database configurations
+# Database configuration
 db_configs = {
     "Postgres SQL": {
         "host": "localhost",
@@ -22,17 +22,19 @@ db_configs = {
     # }
 }
 
-# Initialize session state for model if not already set
+# Initialize session state for model if not already sets
 if 'model' not in st.session_state:
     st.session_state.model = 'llama3'
 
-# Function to reload the module based n model choice
+# Function to reload the module based on model choice
 def reload_module(model_name):
     if model_name == 'llama3':
         return importlib.import_module('llama3')
     elif model_name == 'openai':
         return importlib.import_module('model')
-
+    elif model_name == 'sqlcoder':
+        return importlib.import_module('sqlcoder')
+        
 current_module = reload_module(st.session_state.model)
 
 # Sidebar for database selection
@@ -40,7 +42,7 @@ st.sidebar.title("Database Settings")
 db_choice = st.sidebar.selectbox("Select Database", ("Postgres SQL", "MySQL"))
 
 # Sidebar for model selection
-model_choice = st.sidebar.selectbox("Change Model", ("LLAMA3", "OpenAI"))
+model_choice = st.sidebar.selectbox("Change Model", ("LLAMA3", "OpenAI", "SQLCoder"))
 if st.sidebar.button("Apply Model Change"):
     if model_choice.lower() != st.session_state.model:
         st.session_state.model = model_choice.lower()
@@ -58,7 +60,7 @@ with st.sidebar.expander("Database Configuration"):
         st.write(f"Password: {db_config['password']}")
         st.write(f"Port: {db_config['port']}")
 
-# Main Interface
+# Main Interfaces
 st.title("SQLGenie: The SQL Chatbot")
 st.warning(f"Currently selected model: {st.session_state.model.upper()}")
 
