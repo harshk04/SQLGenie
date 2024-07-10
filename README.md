@@ -4,18 +4,8 @@ Welcome to **SQLGenie**, your friendly SQL chatbot designed to assist with datab
 
 
 # Demo
-
-<table>
-  <tr>
-    <td><img src="https://github.com/harshk04/SQLGenie-Final-App/assets/115946158/45c98eb7-d019-430b-a850-2a1743236402" width="500"/></td>
-    <td><img src="https://github.com/harshk04/SQLGenie-Final-App/assets/115946158/433beec0-6073-4af0-97a0-8015716e9732" width="500"/></td>
-  </tr>
-
-  <tr>
-    <td><img src="https://github.com/harshk04/SQLGenie-Final-App/assets/115946158/7b7afdd5-e0c1-4b4b-8a8c-74ae26be3e2b" width="500"/></td>
-    <td><img src="https://github.com/harshk04/SQLGenie-Final-App/assets/115946158/f56e0b4f-b25b-41e5-adf2-6ae8d6ee4224" width="500"/></td>
-  </tr>
-</table>
+<img width="600" alt="Screenshot 2024-07-10 at 12 30 31 AM" src="https://github.com/harshk04/SQLGenie/assets/115946158/0de479e7-7d14-4417-805b-549ceda6a28f">
+<img width="600" alt="Screenshot 2024-07-10 at 12 30 57 AM" src="https://github.com/harshk04/SQLGenie/assets/115946158/f9c0aee2-2da6-47ea-90a8-454e35fd4921">
 
 
 
