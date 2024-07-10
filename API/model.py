@@ -48,7 +48,7 @@ class MyVanna(Qdrant_VectorStore, OpenAI_Chat):
         return result
 
 def run_query(connection_details, query):
-    config = {'client': QdrantClient(url='http://localhost:6333'), 'api_key': '-proj-Qg23lzqwzXrN1uiD27LCT3BlbkFJNjmZPtHCFFLJD02P9oMP', 'model': 'gpt-3.5-turbo'}
+    config = {'client': QdrantClient(url='http://localhost:6333'), 'api_key': '-proj-Qg23l9oMP', 'model': 'gpt-3.5-turbo'}
     vn = MyVanna(config=config)
 
     # Connect and setup
