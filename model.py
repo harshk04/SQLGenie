@@ -35,6 +35,9 @@ class MyVanna(Qdrant_VectorStore, OpenAI_Chat):
         for question, sql in training_data.queries:
             self.train(question=question, sql=sql)
 
+        for doc in training_data.documentation:
+            self.train(documentation=doc)
+
         # self.train(documentation=training_data.documentation1)
 
         # for question, sql in training_data.queries_applicants:
