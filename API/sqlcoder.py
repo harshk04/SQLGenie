@@ -10,8 +10,8 @@ class SQLCoder(Qdrant_VectorStore, Ollama):
         Qdrant_VectorStore.__init__(self, config=config)
         Ollama.__init__(self, config=config)
 
-    def connect_and_setup(self, host, dbname, user, password, port):
-        self.connect_to_postgres(host=host, dbname=dbname, user=user, password=password, port=port)
+    def connect_and_setup(self):
+        self.connect_to_postgres(host='localhost', dbname='university', user='postgres', password='Harsh@2004', port='5432')
 
         df_information_schema = self.run_sql("""
             SELECT *
@@ -35,6 +35,16 @@ class SQLCoder(Qdrant_VectorStore, Ollama):
         for question, sql in training_data.queries:
             self.train(question=question, sql=sql)
 
+        for doc in training_data.documentation:
+            self.train(documentation=doc)
+
+        # self.train(documentation=training_data.documentation1)
+
+        # for question, sql in training_data.queries_applicants:
+        #     self.train(question=question, sql=sql)
+
+        # self.train(documentation=training_data.documentation2)
+
     def get_training_data_info(self):
         return self.get_training_data()
 
@@ -42,29 +52,28 @@ class SQLCoder(Qdrant_VectorStore, Ollama):
         result = self.ask(question)
         if isinstance(result, tuple) and len(result) == 3:
             query, dataframe, figure = result
-            if isinstance(dataframe, pd.DataFrame):
-                dataframe_dict = dataframe.to_dict(orient='records')
-                if isinstance(figure, dict):
-                    fig = px.bar(dataframe, x='applicant_name', y='salary', title='-')
-                    return {
-                        'query': query,
-                        'dataframe': dataframe_dict,
-                        'figure': fig.to_json()
-                    }
+            if isinstance(dataframe, pd.DataFrame) and isinstance(figure, dict):
+                fig = px.bar(dataframe, x='applicant_name', y='salary', title='-')
+                return query, dataframe, fig
         return result
 
-def run_query(connection_details, query):
-    config = {'client': QdrantClient(url='http://localhost:6333'), 'model': 'sqlcoder'}
-    vn = SQLCoder(config=config)
+# Initialization
+config = {'client': QdrantClient(url='http://localhost:6333'), 'model': 'sqlcoder'}
+vn = SQLCoder(config=config)
 
-    # Connect and setup
-    vn.connect_and_setup(
-        host=connection_details['host'],
-        dbname=connection_details['dbname'],
-        user=connection_details['user'],
-        password=connection_details['password'],
-        port=connection_details['port']
-    )
+# Connect and setup
+df_information_schema = vn.connect_and_setup()
 
-    # Execute the query
-    return vn.ask_question(query)
+# Generate plan and train
+plan = vn.generate_plan_and_train(df_information_schema)
+
+# Create table and inspect training data
+vn.create_table()
+training_data = vn.get_training_data_info()
+
+# This function can be called from the Streamlit app
+def query_vanna(question):
+    return vn.ask_question(question)
+
+def show_training_data():
+    return training_data
