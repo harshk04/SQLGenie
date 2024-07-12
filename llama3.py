@@ -35,7 +35,9 @@ class MyVanna(Qdrant_VectorStore, Ollama):
         for question, sql in training_data.queries:
             self.train(question=question, sql=sql)
 
-        # self.train(documentation=training_data.documentation1)
+        for doc in training_data.documentation:
+            self.train(documentation=doc)
+
 
         # for question, sql in training_data.queries_applicants:
         #     self.train(question=question, sql=sql)
