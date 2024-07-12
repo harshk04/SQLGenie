@@ -8,7 +8,7 @@ import time
 db_configs = {
     "Postgres SQL": {
         "host": "localhost",
-        "dbname": "vectordb",
+        "dbname": "university",
         "user": "postgres",
         "password": "Harsh@2004",
         "port": 5432
