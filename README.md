@@ -4,9 +4,10 @@ Welcome to **SQLGenie**, your friendly SQL chatbot designed to assist with datab
 
 
 # Demo
-<img width="600" alt="Screenshot 2024-07-10 at 12 30 31 AM" src="https://github.com/harshk04/SQLGenie/assets/115946158/0de479e7-7d14-4417-805b-549ceda6a28f">
-<img width="600" alt="Screenshot 2024-07-10 at 12 30 57 AM" src="https://github.com/harshk04/SQLGenie/assets/115946158/f9c0aee2-2da6-47ea-90a8-454e35fd4921">
-
+<img width="600" alt="Screenshot 2024-07-12 at 3 10 16 PM" src="https://github.com/user-attachments/assets/16c1407e-1963-4b41-ac8e-f2ef8fe0dd1f">
+<img width="600" alt="Screenshot 2024-07-12 at 3 10 44 PM" src="https://github.com/user-attachments/assets/51ed02e1-65b4-4605-ab0a-2963cfce609b">
+<img width="600" alt="Screenshot 2024-07-12 at 3 23 07 PM" src="https://github.com/user-attachments/assets/bc3b3818-5f28-4edd-9679-10230bf3a57f">
+<img width="600" alt="Screenshot 2024-07-12 at 3 23 22 PM" src="https://github.com/user-attachments/assets/657b32ff-1896-44fa-b660-080440f62e11">
 
 
 
