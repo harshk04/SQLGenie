@@ -1,29 +1,45 @@
-# Use the official Python image as a base image
+#FLASK API - DOCKERFILE
+
 FROM python:3.9-slim
 
-# Set the working directory
-WORKDIR /app
-
-# Install build tools
-RUN apt-get update && apt-get install -y \
-    gcc \
-    build-essential \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        build-essential \
+        gcc \
+        libssl-dev \
+        libffi-dev \
+        python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy the requirements file
-COPY requirements.txt .
+WORKDIR /app
 
-# Install the required Python packages
+COPY . /app
+
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the application files
-COPY . .
+EXPOSE 8000
 
-# Expose the Streamlit port
-EXPOSE 8501
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
-# Set the Streamlit configuration environment variables
-ENV STREAMLIT_SERVER_HEADLESS=true
 
-# Command to run the Streamlit app
-CMD ["streamlit", "run", "app.py"]
+## STREAMLIT APP DOCKERFILE
+# FROM python:3.9-slim
+
+# WORKDIR /app
+
+# RUN apt-get update && apt-get install -y \
+#     gcc \
+#     build-essential \
+#     && rm -rf /var/lib/apt/lists/*
+
+# COPY requirements.txt .
+
+# RUN pip install --no-cache-dir -r requirements.txt
+
+# COPY . .
+
+# EXPOSE 8501
+
+# ENV STREAMLIT_SERVER_HEADLESS=true
+
+# CMD ["streamlit", "run", "app.py"]
